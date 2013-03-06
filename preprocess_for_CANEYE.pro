@@ -19,7 +19,7 @@ PRO preprocess_for_CANEYE
     band_number = 1
     
     ; Below are the parameters for the ISODATA clustering
-    iterations = 100 ; Default to 100
+    iterations = 15 ; Default to 15 - most images take only 3 iterations
     change_thresh = .5 ; Default to .5
     iso_merge_dist = 5 ; Default to 5 
     iso_merge_pairs = 2 ; Default to 2
