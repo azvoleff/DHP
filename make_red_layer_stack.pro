@@ -1,16 +1,19 @@
-pro make_red_layer_stack, input_folder, band_num, mask_path, output_file=output_file
+PRO make_red_layer_stack, input_folder, band_num, output_file, $
+    filename_format, mask_path
+    
     COMPILE_OPT idl2, hidden
 
     IF(N_ELEMENTS(mask_path) EQ 0) THEN mask_path=!NULL
         
     IF mask_path ne !NULL THEN BEGIN
         print, "Reading mask from " + mask_path
-        mask=read_binary(mask_path, DATA_DIMS=[4928,3264])
+        mask = read_binary(mask_path, DATA_DIMS=[4928, 3264])
     ENDIF
     
+    PRINT, "Making layer stack..."
     tiff_list = FILE_SEARCH(input_folder + PATH_SEP() + $
-      'FNNR_2012_DHP_*-*_*.{TIF}', count=count)
-
+        filename_format, count=count)
+    
     FOR i=0L,(count-1) DO BEGIN
         PRINT, "Reading band " + STRTRIM(band_num,2) + " from " + tiff_list[i]
         image_data = READ_TIFF(tiff_list[i], CHANNELS=band_num)
@@ -25,14 +28,6 @@ pro make_red_layer_stack, input_folder, band_num, mask_path, output_file=output_
         ENDELSE
     ENDFOR
 
-    IF(N_ELEMENTS(output_file) EQ 0) THEN BEGIN
-        ; Extract plot ID from filename of the first tiff image
-        pos = STREGEX(tiff_list[1], 'FNNR_2012_DHP_[0-9]{1,2}-[ABCDEabcde]', $
-          length=len)
-        plot_ID = STRMID(tiff_list[1], pos, len)
-        output_file = input_folder + PATH_SEP() + "Band_" + $
-          STRTRIM(band_num,2) + "_Stack_" + plot_ID + ".tif"
-    ENDIF
-    PRINT, "Writing " + output_file
+    PRINT, "Writing layer stack to " + output_file
     WRITE_TIFF, output_file, layers, /SHORT
-end
+END
