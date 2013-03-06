@@ -14,10 +14,31 @@ PRO preprocess_for_CANEYE
     ; data path).
     input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
     
-    file_prefix = "FNNR_DHP_Fall2012_"
-    filename_format = file_prefix + '*-*_*.{TIF}'
+    ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
+    ; red band, 2 for blue band, and 3 for green band.
     band_number = 1
     
+    ; Below are the parameters for the ISODATA clustering
+    iterations = 100 ; Default to 100
+    change_thresh = .5 ; Default to .5
+    iso_merge_dist = 5 ; Default to 5 
+    iso_merge_pairs = 2 ; Default to 2
+    iso_min_pixels = 20 ; Default to 20
+    iso_split_std = 0 ; Default to 0
+    min_classes = 2 ; Default to 2
+    num_classes = 10 ; Default to 10
+    
+    ; The file_prefix is the prefix in front of each DHP tif file, including 
+    ; all text up until the plot and point ID number. For FNNR, set the
+    ; file_prefix to "FNNR_DHP_Fall2012_". For Wolong, set it to
+    ; "Wolong_DHP_Spring2012_".
+    file_prefix = "FNNR_DHP_Fall2012_"
+    filename_format = file_prefix + '*-*_*.{TIF}'
+    
+    ; *************************************************************************
+    ; Do not modify code below this line.
+    ; *************************************************************************
+           
     point_folder_list = FILE_SEARCH(input_path + PATH_SEP() + $
       '[1-6a-eA-E]', count=count, /TEST_DIRECTORY, /TEST_READ)
     IF COUNT EQ 0 THEN BEGIN
@@ -58,8 +79,10 @@ PRO preprocess_for_CANEYE
         PRINT, "Processing " + point_folder
         PRINT, "************************************************************"
         make_red_layer_stack, point_folder, band_number, layer_stack_file, $
-          filename_format, mask_path
-        run_ISODATA, layer_stack_file, isodata_file
+            filename_format, mask_path
+        run_ISODATA, layer_stack_file, isodata_file, iterations, $
+            change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
+            iso_split_std, min_classes, num_classes
         reclass_ISODATA_results, isodata_file, layer_stack_file, reclass_file
                 
         ; Now save the reclass file as an 8 bit binary format file with a cie

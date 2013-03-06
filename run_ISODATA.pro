@@ -1,18 +1,10 @@
-PRO run_ISODATA, input_image, output_file 
+PRO run_ISODATA, input_image, output_file, iterations, change_thresh, $
+    iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
+    min_classes, num_classes
     COMPILE_OPT idl2, hidden
     
     ; method=4 tells ENVI to use ISODATA for clustering
     method=4
-
-    ; below are the parameters for the ISODATA clustering
-    iterations=100
-    change_thresh=.5
-    iso_merge_dist=5
-    iso_merge_pairs=2
-    iso_min_pixels=20
-    iso_split_std=0
-    min_classes=2
-    num_classes=10
 
     ENVI_OPEN_FILE, input_image, R_FID=fid
 
