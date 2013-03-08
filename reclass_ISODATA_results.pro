@@ -31,7 +31,7 @@ PRO reclass_ISODATA_results, input_image, layer_stack_path, output_file, num_top
     image_data = ENVI_GET_DATA(DIMS=dims, FID=c_fid, POS=[0L])
     recoded_image_data = (image_data EQ masked_code) * 255
     FOR i=0L,(num_top_clusters-1) DO $
-      recoded_image_data[WHERE(image_data EQ sky_codes[i])] = 100 
+        recoded_image_data[WHERE(image_data EQ sky_codes[i])] = 100 
         
     ENVI_WRITE_ENVI_FILE, recoded_image_data, OUT_DT=1, OUT_NAME=output_file
 END
