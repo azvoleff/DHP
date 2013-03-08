@@ -34,6 +34,9 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
   tiff_list = tiff_list[where(tiff_list NE '')]
   num_tiffs = N_ELEMENTS(tiff_list)
   
+  if num_tiffs EQ 0 THEN
+    MESSAGE, 'No tiffs found in ' + input_folder  
+  
   FOR i=0L,(num_tiffs-1) DO BEGIN
     PRINT, "Reading band " + STRTRIM(band_num,2) + " from " + tiff_list[i]
     image_data = READ_TIFF(input_folder + PATH_SEP() + tiff_list[i], $
