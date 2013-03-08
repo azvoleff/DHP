@@ -60,20 +60,18 @@ PRO preprocess_for_CANEYE
         full_point_ID = plot_ID + '-' + point_ID
         
         ; Setup filenames for input/output files
-        layer_stack_file = point_folder + PATH_SEP() + file_prefix + $
-          full_point_ID + "_Band_" + strtrim(band_number, 2) + "_Stack.dat"
-        isodata_file = point_folder + PATH_SEP() + file_prefix + $
-          full_point_ID + "_Band_" + strtrim(band_number, 2) + $
-          "_Stack_ISODATA.dat"
-        reclass_file = point_folder + PATH_SEP() + file_prefix + $
-          full_point_ID + "_Band_" + strtrim(band_number, 2) + $
-          "_Stack_ISODATA_reclass.dat"
-        reclass_cie_file = point_folder + PATH_SEP() + file_prefix + $
-          full_point_ID + "_Band_" + strtrim(band_number, 2) + $
-          "_Stack_ISODATA_reclass.cie"
-        reclass_cie_zipfile = input_path + PATH_SEP() + "CIE_" + file_prefix + $
-          full_point_ID + "_Band_" + strtrim(band_number, 2) + $
-          "_Stack_ISODATA_reclass.zip"
+        output_file_prefix = file_prefix + full_point_ID + "_Band_" + $
+            strtrim(band_number, 2)
+        layer_stack_file = point_folder + PATH_SEP() + output_file_prefix + $
+            "_Stack.dat"
+        isodata_file = point_folder + PATH_SEP() + ouput_file_prefix + $
+            "_Stack_ISODATA.dat"
+        reclass_file = point_folder + PATH_SEP() + output_file_prefix + $
+            "_Stack_ISODATA_reclass.dat"
+        reclass_cie_file = point_folder + PATH_SEP() + output_file_prefix + $
+            "_Stack_ISODATA_reclass.cie"
+        reclass_cie_zipfile = input_path + PATH_SEP() + "CIE_" + $
+          output_file_prefix + "_Stack_ISODATA_reclass.zip"
         
         PRINT, "************************************************************"
         PRINT, "Processing " + point_folder
@@ -89,7 +87,7 @@ PRO preprocess_for_CANEYE
         ; extension, then compress it into a zipfile for CAN-EYE.
         PRINT, "Compressing CIE file for CAN-EYE..."
         FILE_COPY, reclass_file, reclass_cie_file
-        SPAWN, "zip -m " + reclass_cie_zipfile + " " + reclass_cie_file, results
+        SPAWN, "zip -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
         PRINT, results
     ENDFOR
     
