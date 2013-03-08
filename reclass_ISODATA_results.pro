@@ -25,10 +25,10 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, num_top
     NUM_CLASSES=num_classes
     
   ENVI_OPEN_FILE, layer_stack_path, R_FID=l_fid
-  ; The pos=3 below indicates that we will calculate stats on the brightness
-  ; values from the 3rd layer in the layer stack only when we are trying to
-  ; decide which class has the highest mean brightness.
-  pos = [3L]
+  ENVI_FILE_QUERY, l_fid, DIMS=l_dims, NB=l_nb
+  ; Calculate stats on the brightness of the band closest to the middle of the
+  ; layer stack.
+  pos = ROUND(l_nb/2.)
   
   class_ptr=LINDGEN(num_classes)
   
