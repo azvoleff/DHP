@@ -1,31 +1,31 @@
 ;+
 ; :Description:
-;    Layer stack a set of canopy photos from a single plot, and then run ISODATA
+;    For each point in a plot, layer stack the canopy photos, and then run ISODATA
 ;    on the layer stack to classify 10 different clusters. Finally, reclassify
 ;    the ISODATA output so that the cluster with the highest brightness is
 ;    assigned a value of 100 (for sky), while pixels from all other clusters are
 ;    set to 0 (for canopy). Unknown or masked pixels are set to 255.
-;    
+;
 ;    The photos must all be located in the same folder, with a the folder name
 ;    set to the plot ID. Sets of exposures from the same point must be within
 ;    subfolders under the plot ID. For example, the photos from points A-E for
 ;    plot 1 might be organized as follows:
-;    
+;
 ;      D:\Data\FNNR_DHP\1\A
 ;      D:\Data\FNNR_DHP\1\B
 ;      D:\Data\FNNR_DHP\1\C
 ;      D:\Data\FNNR_DHP\1\D
 ;      D:\Data\FNNR_DHP\1\E
-;    
+;
 ;    There are several variables than can be set to control the ISODATA
 ;    clustering, and the reclassification. See the code below for more details
 ;    on these variables.
-;    
+;
 ; :Author: Alex Zvoleff
-; 
+;
 ; :Date: March, 8, 2013
 ;-
-PRO preprocess_for_caneye
+PRO process_plot
   ; The below variable must be set to location on your system of the mask
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
@@ -77,7 +77,7 @@ PRO preprocess_for_caneye
   ; file_prefix to "FNNR_DHP_Fall2012_". For Wolong, set it to
   ; "Wolong_DHP_Spring2012_".
   file_prefix = "FNNR_DHP_Fall2012_"
-  filename_format = file_prefix + '*-*_*.{TIF}'
+  filename_regex = file_prefix + '[1-9]?[0-9]*-[1-6a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
   
   ; *************************************************************************
   ; Do not modify code below this line.
@@ -116,12 +116,22 @@ PRO preprocess_for_caneye
       "_Stack_ISODATA_reclass.cie"
     reclass_cie_zipfile = input_path + PATH_SEP() + "CIE_" + $
       output_file_prefix + "_Stack_ISODATA_reclass.zip"
+    parameter_file = point_folder + PATH_SEP() + output_file_prefix + $
+      "_Processing_Parameters.sav"
+      
+    ; Save the processing parameters so they can be recovered later
+    SAVE, FILENAME=parameter_file, layer_stack_file, isodata_file, reclass_file, $
+      reclass_cie_file, reclass_cie_zipfile, iterations, change_thresh, $
+      iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
+      min_classes, num_classes, mask_path, input_path, point_folder, $
+      band_number, file_prefix, filename_regex, plot_ID, point_ID, $
+      full_point_ID
       
     PRINT, "************************************************************"
     PRINT, "Processing " + point_folder
     PRINT, "************************************************************"
     make_red_layer_stack, point_folder, band_number, layer_stack_file, $
-      filename_format, mask_path
+      filename_regex, mask_path
     run_isodata, layer_stack_file, isodata_file, iterations, $
       change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
       iso_split_std, min_classes, num_classes

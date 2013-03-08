@@ -14,7 +14,7 @@
 ; :Date: March, 8, 2013
 ;-
 PRO make_red_layer_stack, input_folder, band_num, output_file, $
-  filename_format, mask_path
+  filename_regex, mask_path
   
   COMPILE_OPT idl2, hidden
   
@@ -26,12 +26,18 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
   ENDIF
   
   PRINT, "Making layer stack..."
-  tiff_list = FILE_SEARCH(input_folder + PATH_SEP() + $
-    filename_format, count=count)
-    
-  FOR i=0L,(count-1) DO BEGIN
+  
+  files = FILE_SEARCH(input_folder + PATH_SEP() + "*")
+  tiff_list = STREGEX(files, filename_regex, /extract, /fold_case)
+  tiff_list = STRSPLIT(tiff_list, '[[:space:]]', /extract, /regex)
+  ; Remove empty entries
+  tiff_list = tiff_list[where(tiff_list NE '')]
+  num_tiffs = N_ELEMENTS(tiff_list)
+  
+  FOR i=0L,(num_tiffs-1) DO BEGIN
     PRINT, "Reading band " + STRTRIM(band_num,2) + " from " + tiff_list[i]
-    image_data = READ_TIFF(tiff_list[i], CHANNELS=band_num)
+    image_data = READ_TIFF(input_folder + PATH_SEP() + tiff_list[i], $
+      CHANNELS=band_num)
     IF MASK_PATH NE !NULL THEN BEGIN
       image_data = image_data * mask
     ENDIF
