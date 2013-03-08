@@ -64,7 +64,7 @@ PRO preprocess_for_CANEYE
             strtrim(band_number, 2)
         layer_stack_file = point_folder + PATH_SEP() + output_file_prefix + $
             "_Stack.dat"
-        isodata_file = point_folder + PATH_SEP() + ouput_file_prefix + $
+        isodata_file = point_folder + PATH_SEP() + output_file_prefix + $
             "_Stack_ISODATA.dat"
         reclass_file = point_folder + PATH_SEP() + output_file_prefix + $
             "_Stack_ISODATA_reclass.dat"
