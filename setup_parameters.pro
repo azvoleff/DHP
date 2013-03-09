@@ -25,7 +25,7 @@ PRO setup_parameters
   ; min_classes specifies the minimum number of output classes
   min_classes = 8 ; Default to 10
   ; num_classes specifies the maximum number of output classes
-  num_classes = 12 ; Default to 20
+  num_classes = 12 ; Default to 12
   ; change_thresh is used to end the iterative process when the number of
   ; pixels in each class changes by less than the threshold
   ; (which is specified as a percentage).
