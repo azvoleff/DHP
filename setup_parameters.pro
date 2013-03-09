@@ -9,12 +9,17 @@
 PRO setup_parameters
   common mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-    iso_split_std, file_prefix, filename_regex, num_top_clusters
+    iso_split_std, file_prefix, filename_regex, num_top_clusters, $
+    default_folder_path
   ; The below variable must be set to location on your system of the mask
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
   ; fisheye lens. The full path to the mask image must be specified.
   mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
+  
+  ; default_folder_path specifies the default path to show in the file
+  ; picker dialog
+  default_folder_path = "Y:\Data_Store\DHP\Wolong\DHP_Photos"
   
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.

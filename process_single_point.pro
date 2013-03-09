@@ -24,7 +24,8 @@
 PRO process_single_point
   COMMON mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-  iso_split_std, file_prefix, filename_regex, num_top_clusters
+  iso_split_std, file_prefix, filename_regex, num_top_clusters, $
+  default_folder_path
   
   ; Load the parameters from the setup file.
   setup_parameters

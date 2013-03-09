@@ -28,7 +28,8 @@
 PRO process_plot
   COMMON mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-  iso_split_std, file_prefix, filename_regex, num_top_clusters
+  iso_split_std, file_prefix, filename_regex, num_top_clusters, $
+  default_folder_path
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -37,7 +38,7 @@ PRO process_plot
   ; code to have a GUI dialog presented, or uncomment the line below the GUI
   ; code and hard hardcode the path to the input data.
   input_path = DIALOG_PICKFILE(/DIRECTORY, $
-    TITLE="Choose a folder to process")
+    TITLE="Choose a folder to process", PATH=default_folder_path)
   ; Path to input data (comment out above two lines if you hardcode the input
   ; data path).
   ;input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
