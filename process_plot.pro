@@ -28,7 +28,7 @@
 PRO process_plot
   COMMON mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-  iso_split_std, file_prefix, filename_regex
+  iso_split_std, file_prefix, filename_regex, num_top_clusters
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -94,7 +94,8 @@ PRO process_plot
     run_isodata, layer_stack_file, isodata_file, iterations, $
       change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
       iso_split_std, min_classes, num_classes
-    reclass_isodata_results, isodata_file, layer_stack_file, reclass_file
+    reclass_isodata_results, isodata_file, layer_stack_file, reclass_file, $
+      num_top_clusters
     
     ; Now save the reclass file as an 8 bit binary format file with a cie
     ; extension, then compress it into a zipfile for CAN-EYE.
