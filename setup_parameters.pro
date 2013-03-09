@@ -57,5 +57,5 @@ PRO setup_parameters
   ; "Wolong_DHP_Spring2012_".
   file_prefix = "Wolong_DHP_Spring2012_"
   ;file_prefix = "FNNR_DHP_Fall2012_"
-  filename_regex = file_prefix + '[1-9]?[0-9]*-[1-6a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
+  filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
 END
