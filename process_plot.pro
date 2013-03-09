@@ -36,11 +36,11 @@ PRO process_plot
   ; Select the folder where the input data is located. Either use the
   ; code to have a GUI dialog presented, or uncomment the line below the GUI
   ; code and hard hardcode the path to the input data.
-  ;input_path = DIALOG_PICKFILE(/DIRECTORY, $
-  ;    TITLE="Choose a folder to process")
+  input_path = DIALOG_PICKFILE(/DIRECTORY, $
+    TITLE="Choose a folder to process")
   ; Path to input data (comment out above two lines if you hardcode the input
   ; data path).
-  input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
+  ;input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
   
   point_folder_list = FILE_SEARCH(input_path + PATH_SEP() + $
     '[1-6a-eA-E]', count=count, /TEST_DIRECTORY, /TEST_READ)

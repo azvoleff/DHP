@@ -32,11 +32,11 @@ PRO process_single_point
   ; Select the folder where the input data is located. Either use the
   ; code to have a GUI dialog presented, or uncomment the line below the GUI
   ; code and hard hardcode the path to the input data.
-  ;point_folder = DIALOG_PICKFILE(/DIRECTORY, $
-  ;    TITLE="Choose a folder to process")
+  point_folder = DIALOG_PICKFILE(/DIRECTORY, $
+    TITLE="Choose a folder to process")
   ; Path to input data (comment out above two lines if you hardcode the input
   ; data path).
-  point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
+  ;point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
   
   ENVI, /restore_base_save_files
   ENVI_BATCH_INIT, log_file='batch.txt'
