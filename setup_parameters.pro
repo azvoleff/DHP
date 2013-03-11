@@ -15,11 +15,11 @@ PRO setup_parameters
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
   ; fisheye lens. The full path to the mask image must be specified.
-  mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
-  
+  mask_path = "C:\Users\swanders\Desktop\Mask\D7000_Sigma4.5_Mask.dat" 
+    
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog
-  default_folder_path = "Y:\Data_Store\DHP\FNNR\TIFFs"
+  default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.
@@ -28,9 +28,9 @@ PRO setup_parameters
   ; Below are the parameters for the ISODATA clustering
   iterations = 15 ; Default to 15 - most images take only 3-4 iterations
   ; min_classes specifies the minimum number of output classes
-  min_classes = 8 ; Default to 10
+  min_classes = 10 ; Default to 10
   ; num_classes specifies the maximum number of output classes
-  num_classes = 12 ; Default to 12
+  num_classes = 15 ; Default to 12
   ; change_thresh is used to end the iterative process when the number of
   ; pixels in each class changes by less than the threshold
   ; (which is specified as a percentage).
@@ -38,7 +38,7 @@ PRO setup_parameters
   ; iso_merge_dist sets the minimum distance between class means. If the
   ; distance between class means is less than the minimum value entered, then
   ; the classes will be merged.
-  iso_merge_dist = 2000 ; Default to 2000
+  iso_merge_dist = 1000 ; Default to 2000
   ; iso_merge_pairs sets the maximum number of class pairs to merge in a
   ; single iteration
   iso_merge_pairs = 4 ; Default to 4
