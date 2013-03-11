@@ -10,13 +10,17 @@ PRO setup_parameters
   common mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path
+    default_folder_path, zip_path
+    
   ; The below variable must be set to location on your system of the mask
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
   ; fisheye lens. The full path to the mask image must be specified.
-  mask_path = "C:\Users\swanders\Desktop\Mask\D7000_Sigma4.5_Mask.dat" 
-    
+  mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat" 
+  
+  ; Path to Info-Zip executable
+  zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe" 
+  
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog
   default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
@@ -50,7 +54,7 @@ PRO setup_parameters
   ; iso_split_std sets the maximum standard deviation of a class. If a class
   ; has a standard deviation  is larger than this threshold then the class is
   ; split into two classes. If set to zero this type of split is disabled.
-  iso_split_std = 0 ; Default to 0
+  iso_split_std = 5000 ; Default to 0
   
   ; num_top_clusters specifies how many of the brightest clusters should be
   ; combined and recoded as sky (default only 1, the brightest).

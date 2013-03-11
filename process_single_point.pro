@@ -25,7 +25,7 @@ PRO process_single_point
   COMMON mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-  default_folder_path
+  default_folder_path, zip_path
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -86,7 +86,7 @@ PRO process_single_point
   ; extension, then compress it into a zipfile for CAN-EYE.
   PRINT, "Compressing CIE file for CAN-EYE..."
   FILE_COPY, reclass_file, reclass_cie_file
-  SPAWN, "zip -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
+  SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
   PRINT, results
   
   ENVI_BATCH_EXIT
