@@ -34,7 +34,7 @@ PRO process_single_point
   ; code to have a GUI dialog presented, or uncomment the line below the GUI
   ; code and hard hardcode the path to the input data.
   point_folder = DIALOG_PICKFILE(/DIRECTORY, $
-    TITLE="Choose a folder to process")
+    TITLE="Choose a folder to process", PATH=default_folder_path)
   ; Path to input data (comment out above two lines if you hardcode the input
   ; data path).
   ;point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
