@@ -59,7 +59,7 @@ PRO process_single_point
     "_Stack_ISODATA_reclass.dat"
   reclass_cie_file = point_folder + PATH_SEP() + output_file_prefix + $
     "_Stack_ISODATA_reclass.cie"
-  reclass_cie_zipfile = point_folder + PATH_SEP() + "CIE_" + $
+  reclass_cie_zipfile = point_folder + PATH_SEP() + "..\"+ "CIE_" + $
     output_file_prefix + "_Stack_ISODATA_reclass.zip"
   parameter_file = point_folder + PATH_SEP() + output_file_prefix + $
     "_Processing_Parameters.sav"

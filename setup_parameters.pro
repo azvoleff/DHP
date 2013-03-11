@@ -19,7 +19,7 @@ PRO setup_parameters
   
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog
-  default_folder_path = "Y:\Data_Store\DHP\Wolong\DHP_Photos"
+  default_folder_path = "Y:\Data_Store\DHP\FNNR\TIFFs"
   
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.
@@ -60,7 +60,7 @@ PRO setup_parameters
   ; all text up until the plot and point ID number. For FNNR, set the
   ; file_prefix to "FNNR_DHP_Fall2012_". For Wolong, set it to
   ; "Wolong_DHP_Spring2012_".
-  file_prefix = "Wolong_DHP_Spring2012_"
-  ;file_prefix = "FNNR_DHP_Fall2012_"
+  ;file_prefix = "Wolong_DHP_Spring2012_"
+  file_prefix = "FNNR_DHP_Fall2012_"
   filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
 END
