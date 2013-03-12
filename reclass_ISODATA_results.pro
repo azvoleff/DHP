@@ -43,7 +43,7 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, num_top
   FOR i=0L,(num_top_clusters-1) DO $
     recoded_image_data[WHERE(image_data EQ sky_codes[i])] = 100
     
-  image_data_dims = SIZE(image_data,/DIMENSIONS)
+  image_data_dims = SIZE(image_data, /DIMENSIONS)
   
   ENVI_WRITE_ENVI_FILE, recoded_image_data, OUT_DT=1, OUT_NAME=output_file, $
     NB=1, NS=image_data_dims[0], NL=image_data_dims[1]
