@@ -59,6 +59,8 @@ PRO process_plot
   ; data path).
   ;input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
   
+  TIC
+  
   point_folder_list = FILE_SEARCH(input_path + PATH_SEP() + $
     '[1-6a-eA-E]', count=count, /TEST_DIRECTORY, /TEST_READ)
   IF COUNT EQ 0 THEN BEGIN
@@ -78,6 +80,8 @@ PRO process_plot
     plot_ID = split_point_folder[num_strs-2]
     point_ID = split_point_folder[num_strs-1]
     full_point_ID = plot_ID + '-' + point_ID
+    
+    clock = TIC('Plot ' + full_point_ID) 
     
     ; If an output folder was specified, check that it exists. If it doesn't,
     ; raise an error. If none was specified, output to the input folder.
@@ -125,11 +129,13 @@ PRO process_plot
     PRINT, "Compressing CIE file for CAN-EYE..."
     FILE_COPY, reclass_file, reclass_cie_file
     SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
-    PRINT, results  
+    PRINT, results
+    TOC, clock
   ENDFOR
-  
+    
   ENVI_BATCH_EXIT
   PRINT, "************************************************************"
   PRINT, "             Completed CAN-EYE pre-processing."
   PRINT, "************************************************************"
+  TOC
 END

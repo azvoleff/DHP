@@ -55,6 +55,8 @@ PRO process_single_point
   ; data path).
   ;point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
   
+  TIC
+  
   ENVI, /restore_base_save_files
   ENVI_BATCH_INIT, log_file='batch.txt'
   
@@ -85,7 +87,7 @@ PRO process_single_point
     output_file_prefix + "_Stack_ISODATA_reclass_" + timestamp + ".zip"
   parameter_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Processing_Parameters_" + timestamp + ".sav"
-    
+  
   PRINT, "************************************************************"
   PRINT, "Processing " + point_folder
   PRINT, "************************************************************"
@@ -95,7 +97,6 @@ PRO process_single_point
     iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
     min_classes, num_classes, mask_path, point_folder, band_number, $
     file_prefix, filename_regex
-  
   make_red_layer_stack, point_folder, band_number, layer_stack_file, $
     filename_regex, mask_path
   run_isodata, layer_stack_file, isodata_file, iterations, $
@@ -110,9 +111,10 @@ PRO process_single_point
   FILE_COPY, reclass_file, reclass_cie_file
   SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
   PRINT, results
-  
+    
   ENVI_BATCH_EXIT
   PRINT, "************************************************************"
   PRINT, "             Completed CAN-EYE pre-processing."
   PRINT, "************************************************************"
+  TOC
 END
