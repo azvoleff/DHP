@@ -10,19 +10,33 @@ PRO setup_parameters
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path, zip_path
-    
+    default_folder_path, zip_path, output_folder
+  
+  compile_opt idl2, hidden
+  
+  ; Specifying a default output folder is optional. To disable output folder 
+  ; and output files in input folder, uncomment the "output_folder = !NULL"
+  ; line.
+  ;output_folder = "C:\Users\azvoleff\Desktop\FNNR_Output"
+  output_folder = "C:\Users\winroot\Desktop\FNNR_Output"
+  ;output_folder = !NULL
+  
   ; The below variable must be set to location on your system of the mask
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
-  ; fisheye lens. The full path to the mask image must be specified.
+  ; fisheye lens. The full path to the mask image must be specified. To
+  ; disable masking, uncomment the "mask_path = !NULL" line.
+  ;mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
   mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
-  
+  ;mask_path = !NULL
+
   ; Path to Info-Zip executable
+  ;zip_path = "C:\Users\azvoleff\Code\IDL\DHP\zip300xn\zip.exe"
   zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe"
-  
+
   ; default_folder_path specifies the default path to show in the file
-  ; picker dialog
+  ; picker dialog. If an invalid path is specified, it will be ignored.
+  ;default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
   default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
@@ -67,4 +81,14 @@ PRO setup_parameters
   ;file_prefix = "Wolong_DHP_Spring2012_"
   file_prefix = "FNNR_DHP_Fall2012_"
   filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
+
+  ; Check that the specified paths are valid
+  IF output_folder NE !NULL THEN $
+    IF NOT FILE_TEST(output_folder, /DIRECTORY, /WRITE) THEN $
+    MESSAGE, "Error: cannot write to " + output_folder
+  IF mask_path NE !NULL THEN $
+    IF NOT FILE_TEST(mask_path, /REGULAR, /READ) THEN $
+    MESSAGE, "Error: cannot read mask from" + mask_path
+  IF NOT FILE_TEST(zip_path, /REGULAR, /EXECUTABLE) THEN $
+    MESSAGE, "Error: cannot execute " + zip_path
 END

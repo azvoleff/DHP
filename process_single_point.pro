@@ -25,7 +25,9 @@ PRO process_single_point
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-  default_folder_path, zip_path
+  default_folder_path, zip_path, output_folder
+  
+  compile_opt idl2, hidden
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -62,20 +64,26 @@ PRO process_single_point
   point_ID = split_point_folder[num_strs-1]
   full_point_ID = plot_ID + '-' + point_ID
   
+  ; If an output folder was specified, check that it exists. If it doesn't,
+  ; raise an error. If none was specified, output to the input folder.
+  IF output_folder EQ !NULL THEN output_folder = point_folder 
+  IF NOT FILE_TEST(point_folder, /DIRECTORY, /READ) THEN $
+    MESSAGE, "Error: cannot read from " + point_folder
+    
   ; Setup filenames for input/output files
   output_file_prefix = file_prefix + full_point_ID + "_Band_" + $
     STRTRIM(band_number, 2)
-  layer_stack_file = point_folder + PATH_SEP() + output_file_prefix + $
+  layer_stack_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Stack_" + timestamp + ".tif"
-  isodata_file = point_folder + PATH_SEP() + output_file_prefix + $
+  isodata_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Stack_ISODATA_" + timestamp + ".dat"
-  reclass_file = point_folder + PATH_SEP() + output_file_prefix + $
+  reclass_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Stack_ISODATA_reclass_" + timestamp + ".dat"
-  reclass_cie_file = point_folder + PATH_SEP() + output_file_prefix + $
+  reclass_cie_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Stack_ISODATA_reclass_" + timestamp + ".cie"
-  reclass_cie_zipfile = point_folder + PATH_SEP() + "..\"+ "CIE_" + $
+  reclass_cie_zipfile = output_folder + PATH_SEP() + "CIE_" + $
     output_file_prefix + "_Stack_ISODATA_reclass_" + timestamp + ".zip"
-  parameter_file = point_folder + PATH_SEP() + output_file_prefix + $
+  parameter_file = output_folder + PATH_SEP() + output_file_prefix + $
     "_Processing_Parameters_" + timestamp + ".sav"
     
   PRINT, "************************************************************"
