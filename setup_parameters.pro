@@ -17,7 +17,7 @@ PRO setup_parameters
   ; Specifying a default output folder is optional. To disable output folder 
   ; and output files in input folder, uncomment the "output_folder = !NULL"
   ; line.
-  ;output_folder = "C:\Users\azvoleff\Desktop\FNNR_Output"
+  ;output_folder = "D:\Workspace"
   output_folder = "C:\Users\winroot\Desktop\FNNR_Output"
   ;output_folder = !NULL
   
@@ -39,12 +39,15 @@ PRO setup_parameters
   ;default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
   default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
-  ; Exclude certain exposures from the layer stack. Specify as an array of band 
-  ; numbers. The exposures, in order, are (relative to the metered exposure):
-  ;   -4, -3, -2, -1, 0, +1
-  ; So, for example, to ignore the 5th and 6th exposures you could specify:
-  ;   ignored_exposures = [5, 6]
-  ; and that would exclude the 0 and +1 exposures from the layer stack.
+  ; Exclude certain exposures from the layer stack. Specify as an array of EV
+  ; values. The exposures, in order, are (relative to the metered exposure):
+  ;   -4, -3, -2, -1, 0, 1
+  ; So, for example, to ignore the exposure that is 1 stop over-exposed, you
+  ; could specify:
+  ;   ignored_exposures = [1]
+  ; To ignore the exposure that is 4 stops under-exposed, and the exposure that
+  ; is 3 stops under-exposed, you could specify:
+  ;    ignored_exposures = [-4, -3]
   ignored_exposures = []
 
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
@@ -88,7 +91,7 @@ PRO setup_parameters
   ; "Wolong_DHP_Spring2012_".
   ;file_prefix = "Wolong_DHP_Spring2012_"
   file_prefix = "FNNR_DHP_Fall2012_"
-  filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[0-9]*_[0-9]*(-[0-9])?.(TIF|tif)'
+  filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[-]?[0-4] EV_[0-9]{8,8}_[0-9]{6,6}.(TIF|tif)'
 
   ; Check that the specified paths are valid
   IF output_folder NE !NULL THEN $
@@ -99,4 +102,5 @@ PRO setup_parameters
     MESSAGE, "Error: cannot read mask from" + mask_path
   IF NOT FILE_TEST(zip_path, /REGULAR, /EXECUTABLE) THEN $
     MESSAGE, "Error: cannot execute " + zip_path
+  ignored_exposures = LONG(ignored_exposures)
 END
