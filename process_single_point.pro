@@ -22,13 +22,27 @@
 ; :Date: March, 8, 2013
 ;-
 PRO process_single_point
-  COMMON mask_path, band_number, iterations, min_classes, num_classes, $
+  COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
   default_folder_path, zip_path
   
   ; Load the parameters from the setup file.
   setup_parameters
+  
+  ; Below date code adapted from cgtimestamp.pro from idlcoyote.com, Copyright
+  ; (c) 2013, by Fanning Software Consulting, Inc. All rights reserved.     
+  time = Systime(UTC=Keyword_Set(utc))
+  day = Strmid(time, 0, 3)
+  date = String(StrMid(time, 8, 2), Format='(I2.2)')
+  month = Strmid(time, 4, 3)
+  year = Strmid(time, 20, 4)
+  hour = Strmid(time, 11, 2)
+  min = Strmid(time, 14, 2)
+  sec = Strmid(time, 17, 2)
+  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+  m = (Where(months EQ StrUpCase(month))) + 1
+  timestamp = year + String(m, FORMAT='(I2.2)') + date + '-' + hour + min + sec
   
   ; Select the folder where the input data is located. Either use the
   ; code to have a GUI dialog presented, or uncomment the line below the GUI
@@ -52,17 +66,17 @@ PRO process_single_point
   output_file_prefix = file_prefix + full_point_ID + "_Band_" + $
     STRTRIM(band_number, 2)
   layer_stack_file = point_folder + PATH_SEP() + output_file_prefix + $
-    "_Stack.tif"
+    "_Stack_" + timestamp + ".tif"
   isodata_file = point_folder + PATH_SEP() + output_file_prefix + $
-    "_Stack_ISODATA.dat"
+    "_Stack_ISODATA_" + timestamp + ".dat"
   reclass_file = point_folder + PATH_SEP() + output_file_prefix + $
-    "_Stack_ISODATA_reclass.dat"
+    "_Stack_ISODATA_reclass_" + timestamp + ".dat"
   reclass_cie_file = point_folder + PATH_SEP() + output_file_prefix + $
-    "_Stack_ISODATA_reclass.cie"
+    "_Stack_ISODATA_reclass_" + timestamp + ".cie"
   reclass_cie_zipfile = point_folder + PATH_SEP() + "..\"+ "CIE_" + $
-    output_file_prefix + "_Stack_ISODATA_reclass.zip"
+    output_file_prefix + "_Stack_ISODATA_reclass_" + timestamp + ".zip"
   parameter_file = point_folder + PATH_SEP() + output_file_prefix + $
-    "_Processing_Parameters.sav"
+    "_Processing_Parameters_" + timestamp + ".sav"
     
   PRINT, "************************************************************"
   PRINT, "Processing " + point_folder

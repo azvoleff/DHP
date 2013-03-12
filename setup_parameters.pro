@@ -7,7 +7,7 @@
 ; :Date: March, 8, 2013
 ;-
 PRO setup_parameters
-  common mask_path, band_number, iterations, min_classes, num_classes, $
+  COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
     default_folder_path, zip_path
@@ -16,10 +16,10 @@ PRO setup_parameters
   ; image (D7000_Sigma4.5_Mask.dat). The mask image will be used to mask areas
   ; of the photo that are outside the field of view of the 4.5mm Sigma
   ; fisheye lens. The full path to the mask image must be specified.
-  mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat" 
+  mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
   
   ; Path to Info-Zip executable
-  zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe" 
+  zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe"
   
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog
