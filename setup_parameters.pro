@@ -10,7 +10,7 @@ PRO setup_parameters
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path, zip_path, output_folder
+    default_folder_path, zip_path, output_folder, ignored_exposures
   
   compile_opt idl2, hidden
   
@@ -39,6 +39,14 @@ PRO setup_parameters
   ;default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
   default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
+  ; Exclude certain exposures from the layer stack. Specify as an array of band 
+  ; numbers. The exposures, in order, are (relative to the metered exposure):
+  ;   -4, -3, -2, -1, 0, +1
+  ; So, for example, to ignore the 5th and 6th exposures you could specify:
+  ;   ignored_exposures = [5, 6]
+  ; and that would exclude the 0 and +1 exposures from the layer stack.
+  ignored_exposures = [6]
+
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.
   band_number = 1

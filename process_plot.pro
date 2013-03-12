@@ -29,7 +29,7 @@ PRO process_plot
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-  default_folder_path, zip_path, output_folder
+  default_folder_path, zip_path, output_folder, ignored_exposures
   
   compile_opt idl2, hidden
   
@@ -111,13 +111,13 @@ PRO process_plot
       iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
       min_classes, num_classes, mask_path, input_path, point_folder, $
       band_number, file_prefix, filename_regex, plot_ID, point_ID, $
-      full_point_ID
+      full_point_ID, ignored_exposures
       
     PRINT, "************************************************************"
     PRINT, "Processing " + point_folder
     PRINT, "************************************************************"
     make_red_layer_stack, point_folder, band_number, layer_stack_file, $
-      filename_regex, mask_path
+      filename_regex, mask_path, ignored_exposures
     run_isodata, layer_stack_file, isodata_file, iterations, $
       change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
       iso_split_std, min_classes, num_classes

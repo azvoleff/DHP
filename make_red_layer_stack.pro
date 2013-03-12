@@ -14,7 +14,7 @@
 ; :Date: March, 8, 2013
 ;-
 PRO make_red_layer_stack, input_folder, band_num, output_file, $
-  filename_regex, mask_path
+  filename_regex, mask_path, ignored_exposures
   
   COMPILE_OPT idl2, hidden
   
@@ -36,8 +36,22 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
     MESSAGE, 'No tiffs found in ' + input_folder + $
     ' (using regular expression "' + filename_regex + '")'
   tiff_list = tiff_list[non_empties]
+  IF ignored_exposures NE [] THEN BEGIN
+    IF MAX(ignored_exposures) GT N_ELEMENTS(tiff_list) THEN $
+      MESSAGE, "Error: cannot exclude exposures", + $
+      strtrim(ignored_exposures, 2) + "when only" + $
+      strtim(N_ELEMENTS(tiff_list), 2) + "exposures were taken"
+    IF MIN(ignored_exposures) LT 1 THEN $
+      MESSAGE, "Error: ignored exposures cannot be less than 1"
+    print, "Exposures excluded from layer stack:", strtrim(ignored_exposures, 2)
+    included_tiffs = MAKE_ARRAY(N_ELEMENTS(tiff_list),1, /INTEGER, VALUE=1)
+    ; Subtract one from below due to zero indexing
+    included_tiffs[ignored_exposures-1] = 0
+    tiff_list = tiff_list[where(included_tiffs, /NULL)]
+  ENDIF
   num_tiffs = N_ELEMENTS(tiff_list)
-  
+  IF num_tiffs LT 1 THEN MESSAGE, "Error: all tiffs excluded"
+    
   FOR i=0L,(num_tiffs-1) DO BEGIN
     PRINT, "Reading band " + STRTRIM(band_num,2) + " from " + tiff_list[i]
     image_data = READ_TIFF(input_folder + PATH_SEP() + tiff_list[i], $
