@@ -45,7 +45,7 @@ PRO setup_parameters
   ; So, for example, to ignore the 5th and 6th exposures you could specify:
   ;   ignored_exposures = [5, 6]
   ; and that would exclude the 0 and +1 exposures from the layer stack.
-  ignored_exposures = [6]
+  ignored_exposures = []
 
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.
