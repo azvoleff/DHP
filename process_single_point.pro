@@ -91,12 +91,14 @@ PRO process_single_point
   PRINT, "************************************************************"
   PRINT, "Processing " + point_folder
   PRINT, "************************************************************"
+  
   ; First save the processing parameters so they can be recovered later
   SAVE, FILENAME=parameter_file, layer_stack_file, isodata_file, reclass_file, $
     reclass_cie_file, reclass_cie_zipfile, iterations, change_thresh, $
     iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
     min_classes, num_classes, mask_path, point_folder, band_number, $
     file_prefix, filename_regex, ignored_exposures
+    
   make_red_layer_stack, point_folder, band_number, layer_stack_file, $
     filename_regex, mask_path, ignored_exposures
   run_isodata, layer_stack_file, isodata_file, iterations, $

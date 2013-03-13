@@ -104,7 +104,10 @@ PRO process_plot
       output_file_prefix + "_Stack_ISODATA_reclass_" + timestamp + ".zip"
     parameter_file = output_folder + PATH_SEP() + output_file_prefix + $
       "_Processing_Parameters_" + timestamp + ".sav"
-      
+    
+    PRINT, "************************************************************"
+    PRINT, "Processing " + point_folder
+    PRINT, "************************************************************"     
     ; Save the processing parameters so they can be recovered later
     SAVE, FILENAME=parameter_file, layer_stack_file, isodata_file, reclass_file, $
       reclass_cie_file, reclass_cie_zipfile, iterations, change_thresh, $
@@ -113,9 +116,6 @@ PRO process_plot
       band_number, file_prefix, filename_regex, plot_ID, point_ID, $
       full_point_ID, ignored_exposures
       
-    PRINT, "************************************************************"
-    PRINT, "Processing " + point_folder
-    PRINT, "************************************************************"
     make_red_layer_stack, point_folder, band_number, layer_stack_file, $
       filename_regex, mask_path, ignored_exposures
     run_isodata, layer_stack_file, isodata_file, iterations, $
