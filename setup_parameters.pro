@@ -102,5 +102,5 @@ PRO setup_parameters
     MESSAGE, "Error: cannot read mask from" + mask_path
   IF NOT FILE_TEST(zip_path, /REGULAR, /EXECUTABLE) THEN $
     MESSAGE, "Error: cannot execute " + zip_path
-  ignored_exposures = LONG(ignored_exposures)
+  IF ignored_exposures NE !NULL THEN ignored_exposures = LONG(ignored_exposures)
 END
