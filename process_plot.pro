@@ -81,7 +81,7 @@ PRO process_plot
     point_ID = split_point_folder[num_strs-1]
     full_point_ID = plot_ID + '-' + point_ID
     
-    clock = TIC('Plot ' + full_point_ID) 
+    clock = TIC('Plot ' + full_point_ID)
     
     ; If an output folder was specified, check that it exists. If it doesn't,
     ; raise an error. If none was specified, output to the input folder.
