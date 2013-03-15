@@ -55,8 +55,6 @@ PRO process_single_point
   ; data path).
   ;point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
   
-  TIC
-  
   ENVI, /restore_base_save_files
   ENVI_BATCH_INIT, log_file='batch.txt'
   
@@ -118,5 +116,4 @@ PRO process_single_point
   PRINT, "************************************************************"
   PRINT, "             Completed CAN-EYE pre-processing."
   PRINT, "************************************************************"
-  TOC
 END
