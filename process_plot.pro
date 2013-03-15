@@ -33,6 +33,8 @@ PRO process_plot
   
   compile_opt idl2, hidden
   
+  overall_time = SYSTIME(1)
+  
   ; Load the parameters from the setup file.
   setup_parameters
   
@@ -72,6 +74,8 @@ PRO process_plot
   ENVI_BATCH_INIT, log_file='batch.txt'
   
   FOR i=0, count-1 DO BEGIN
+    point_time = SYSTIME(1)
+    
     point_folder = point_folder_list[i]
     pos = STREGEX(point_folder, '[0-9]{1,2}[\\]{1,2}[a-iA-I1-9]$', length=len)
       split_point_folder = strsplit(point_folder, "\/", /EXTRACT, count=num_strs)
@@ -126,10 +130,14 @@ PRO process_plot
     FILE_COPY, reclass_file, reclass_cie_file
     SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
     PRINT, results
+    PRINT, "Processing time for point ", strtrim(full_point_ID,2), ": ", $
+      STRTRIM(ROUND(SYSTIME(1) - point_time),2), " seconds"
   ENDFOR
     
   ENVI_BATCH_EXIT
   PRINT, "************************************************************"
   PRINT, "             Completed CAN-EYE pre-processing."
   PRINT, "************************************************************"
+  PRINT, "Total processing time: ", STRTRIM(ROUND(SYSTIME(1) - overall_time),2), $
+    " seconds"
 END

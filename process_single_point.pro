@@ -28,6 +28,7 @@ PRO process_single_point
   default_folder_path, zip_path, output_folder, ignored_exposures
   
   compile_opt idl2, hidden
+  overall_time = SYSTIME(1)
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -116,4 +117,6 @@ PRO process_single_point
   PRINT, "************************************************************"
   PRINT, "             Completed CAN-EYE pre-processing."
   PRINT, "************************************************************"
+  PRINT, "Total processing time: ", STRTRIM(ROUND(SYSTIME(1) - overall_time),2), $
+    " seconds"
 END
