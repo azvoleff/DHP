@@ -4,7 +4,7 @@
 ;
 ; :Author: Alex Zvoleff
 ;
-; :Date: March, 8, 2013
+; :Date: April, 18, 2013
 ;-
 PRO setup_parameters
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
