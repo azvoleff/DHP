@@ -17,8 +17,8 @@ PRO setup_parameters
   ; Specifying a default output folder is optional. To disable output folder 
   ; and output files in input folder, uncomment the "output_folder = !NULL"
   ; line.
-  ;output_folder = "D:\Workspace"
-  output_folder = "C:\Users\winroot\Desktop\FNNR_Output"
+  output_folder = "D:\Workspace"
+  ;output_folder = "C:\Users\winroot\Desktop\FNNR_Output"
   ;output_folder = !NULL
   
   ; The below variable must be set to location on your system of the mask
@@ -26,18 +26,18 @@ PRO setup_parameters
   ; of the photo that are outside the field of view of the 4.5mm Sigma
   ; fisheye lens. The full path to the mask image must be specified. To
   ; disable masking, uncomment the "mask_path = !NULL" line.
-  ;mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
-  mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
+  mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
+  ;mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
   ;mask_path = !NULL
 
   ; Path to Info-Zip executable
-  ;zip_path = "C:\Users\azvoleff\Code\IDL\DHP\zip300xn\zip.exe"
-  zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe"
+  zip_path = "C:\Users\azvoleff\Code\IDL\DHP\zip300xn\zip.exe"
+  ;zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe"
 
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog. If an invalid path is specified, it will be ignored.
-  ;default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
-  default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
+  default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
+  ;default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
   ; Exclude certain exposures from the layer stack. Specify as an array of EV
   ; values. The exposures, in order, are (relative to the metered exposure):
@@ -48,26 +48,24 @@ PRO setup_parameters
   ; To ignore the exposure that is 4 stops under-exposed, and the exposure that
   ; is 3 stops under-exposed, you could specify:
   ;    ignored_exposures = [-4, -3]
-  ignored_exposures = []
-
+  ignored_exposures = [1] ; Default to ignoring the most over-exposed frame (1)
   ; Choose the band number to use for the ISODATA layer stack. Set to 1 for
   ; red band, 2 for blue band, and 3 for green band.
   band_number = 1
-  
   ; Below are the parameters for the ISODATA clustering
-  iterations = 15 ; Default to 15 - most images take only 3-4 iterations
+  iterations = 20 ; Default to 20
   ; min_classes specifies the minimum number of output classes
   min_classes = 10 ; Default to 10
   ; num_classes specifies the maximum number of output classes
-  num_classes = 15 ; Default to 12
+  num_classes = 15 ; Default to 15
   ; change_thresh is used to end the iterative process when the number of
   ; pixels in each class changes by less than the threshold
-  ; (which is specified as a percentage).
-  change_thresh = .05 ; Default to 0-1.0
+  ; (which is specified as a fraction from 0-1.0).
+  change_thresh = .01 ; Default to .01
   ; iso_merge_dist sets the minimum distance between class means. If the
   ; distance between class means is less than the minimum value entered, then
   ; the classes will be merged.
-  iso_merge_dist = 1000 ; Default to 2000
+  iso_merge_dist = 1000 ; Default to 1000
   ; iso_merge_pairs sets the maximum number of class pairs to merge in a
   ; single iteration
   iso_merge_pairs = 4 ; Default to 4
@@ -79,8 +77,7 @@ PRO setup_parameters
   ; iso_split_std sets the maximum standard deviation of a class. If a class
   ; has a standard deviation  is larger than this threshold then the class is
   ; split into two classes. If set to zero this type of split is disabled.
-  iso_split_std = 5000 ; Default to 0
-  
+  iso_split_std = 3000 ; Default to 3000
   ; num_top_clusters specifies how many of the brightest clusters should be
   ; combined and recoded as sky (default only 1, the brightest).
   num_top_clusters = 1
