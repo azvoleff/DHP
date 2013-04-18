@@ -25,7 +25,7 @@
 ;
 ; :Date: April, 18, 2013
 ;-
-PRO process_plot
+PRO process_plot, plot_folder
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
@@ -33,111 +33,45 @@ PRO process_plot
   
   compile_opt idl2, hidden
   
-  overall_time = SYSTIME(1)
+  plot_time = SYSTIME(1)
   
   ; Load the parameters from the setup file.
   setup_parameters
   
-  ; Below date code adapted from cgtimestamp.pro from idlcoyote.com, Copyright
-  ; (c) 2013, by Fanning Software Consulting, Inc. All rights reserved.
-  time = SYSTIME(UTC=KEYWORD_SET(utc))
-  day = STRMID(time, 0, 3)
-  date = STRING(STRMID(time, 8, 2), Format='(I2.2)')
-  month = STRMID(time, 4, 3)
-  year = STRMID(time, 20, 4)
-  hour = STRMID(time, 11, 2)
-  min = STRMID(time, 14, 2)
-  sec = STRMID(time, 17, 2)
-  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-  m = (WHERE(months EQ STRUPCASE(month))) + 1
-  timestamp = year + STRING(m, FORMAT='(I2.2)') + date + '-' + hour + min + sec
-  
   ; Select the folder where the input data is located. Either use the
-  ; code to have a GUI dialog presented, or uncomment the line below the GUI
-  ; code and hard hardcode the path to the input data.
-  input_path = DIALOG_PICKFILE(/DIRECTORY, $
-    TITLE="Choose a folder to process", PATH=default_folder_path)
-  ; Path to input data (comment out above two lines if you hardcode the input
-  ; data path).
-  ;input_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1"
+  ; code to have a GUI dialog presented, or use the value of the plot_folder
+  ; input parameter.
+  IF plot_folder EQ !NULL THEN BEGIN
+    plot_folder = DIALOG_PICKFILE(/DIRECTORY, $
+      TITLE="Choose a folder to process", PATH=default_folder_path)
+  END
+
   
-  point_folder_list = FILE_SEARCH(input_path + PATH_SEP() + $
+  PRINT, "************************************************************"
+  PRINT, "Processing " + plot_folder
+  
+  point_folder_list = FILE_SEARCH(plot_folder + PATH_SEP() + $
     '[1-6a-eA-E]', count=count, /TEST_DIRECTORY, /TEST_READ)
   IF COUNT EQ 0 THEN BEGIN
-    MESSAGE, "No point folders found in " + input_path
+    MESSAGE, "No point folders found in " + plot_folder
   ENDIF ELSE BEGIN
     PRINT, "Found " + STRTRIM(count, 2) + " point folders:"
     FOR i=0, count-1 DO PRINT, "    " + point_folder_list[i]
   ENDELSE
-  
-  ENVI, /restore_base_save_files
-  ENVI_BATCH_INIT, log_file='batch.txt'
-  
+
   FOR i=0, count-1 DO BEGIN
-    point_time = SYSTIME(1)
-    
     point_folder = point_folder_list[i]
-    pos = STREGEX(point_folder, '[0-9]{1,2}[\\]{1,2}[a-iA-I1-9]$', length=len)
-      split_point_folder = strsplit(point_folder, "\/", /EXTRACT, count=num_strs)
-    plot_ID = split_point_folder[num_strs-2]
-    point_ID = split_point_folder[num_strs-1]
-    full_point_ID = plot_ID + '-' + point_ID
-    
-    ; If an output folder was specified, check that it exists. If it doesn't,
-    ; raise an error. If none was specified, output to the input folder.
-    IF output_folder EQ !NULL THEN output_folder = point_folder 
+ 
     IF NOT FILE_TEST(point_folder, /DIRECTORY, /READ) THEN $
       MESSAGE, "Error: cannot read from " + point_folder
     
-    ; Setup filenames for input/output files
-    output_file_prefix = file_prefix + full_point_ID + "_Band_" + $
-      STRTRIM(band_number, 2)
-    layer_stack_file = output_folder + PATH_SEP() + output_file_prefix + $
-      "_Stack_" + timestamp + ".tif"
-    isodata_file = output_folder + PATH_SEP() + output_file_prefix + $
-      "_Stack_ISODATA_" + timestamp + ".dat"
-    reclass_file = output_folder + PATH_SEP() + output_file_prefix + $
-      "_Stack_ISODATA_reclass_" + timestamp + ".dat"
-    reclass_cie_file = output_folder + PATH_SEP() + output_file_prefix + $
-      "_Stack_ISODATA_reclass_" + timestamp + ".cie"
-    reclass_cie_zipfile = output_folder + PATH_SEP() + "CIE_" + $
-      output_file_prefix + "_Stack_ISODATA_reclass_" + timestamp + ".zip"
-    parameter_file = output_folder + PATH_SEP() + output_file_prefix + $
-      "_Processing_Parameters_" + timestamp + ".sav"
+    process_single_point, point_folder
     
-    PRINT, "************************************************************"
-    PRINT, "Processing " + point_folder
-    PRINT, "************************************************************"     
-    ; Save the processing parameters so they can be recovered later
-    SAVE, FILENAME=parameter_file, layer_stack_file, isodata_file, reclass_file, $
-      reclass_cie_file, reclass_cie_zipfile, iterations, change_thresh, $
-      iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
-      min_classes, num_classes, mask_path, input_path, point_folder, $
-      band_number, file_prefix, filename_regex, plot_ID, point_ID, $
-      full_point_ID, ignored_exposures
-      
-    make_red_layer_stack, point_folder, band_number, layer_stack_file, $
-      filename_regex, mask_path, ignored_exposures
-    run_isodata, layer_stack_file, isodata_file, iterations, $
-      change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-      iso_split_std, min_classes, num_classes
-    reclass_isodata_results, isodata_file, layer_stack_file, reclass_file, $
-      num_top_clusters
-    
-    ; Now save the reclass file as an 8 bit binary format file with a cie
-    ; extension, then compress it into a zipfile for CAN-EYE.
-    PRINT, "Compressing CIE file for CAN-EYE..."
-    FILE_COPY, reclass_file, reclass_cie_file
-    SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
-    PRINT, results
-    PRINT, "Processing time for point ", strtrim(full_point_ID,2), ": ", $
-      STRTRIM(ROUND(SYSTIME(1) - point_time),2), " seconds"
   ENDFOR
-    
-  ENVI_BATCH_EXIT
+  
+  PRINT, "Finished processing " + plot_folder
+  PRINT, "Plot processing time: ", STRTRIM(ROUND((SYSTIME(1) - plot_time)/60.) ,2), $
+    " minutes"
   PRINT, "************************************************************"
-  PRINT, "             Completed CAN-EYE pre-processing."
-  PRINT, "************************************************************"
-  PRINT, "Total processing time: ", STRTRIM(ROUND(SYSTIME(1) - overall_time),2), $
-    " seconds"
+
 END

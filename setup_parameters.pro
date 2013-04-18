@@ -36,7 +36,7 @@ PRO setup_parameters
 
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog. If an invalid path is specified, it will be ignored.
-  default_folder_path = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
+  default_folder_path = "R:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
   ;default_folder_path = "\\vortex\an_research\Data_Store\DHP\FNNR\DHPphotos_FNNR\TIFFs"
   
   ; Exclude certain exposures from the layer stack. Specify as an array of EV

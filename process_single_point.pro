@@ -21,14 +21,17 @@
 ; 
 ; :Date: April, 18, 2013
 ;-
-PRO process_single_point
+PRO process_single_point, point_folder
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
   change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
   iso_split_std, file_prefix, filename_regex, num_top_clusters, $
   default_folder_path, zip_path, output_folder, ignored_exposures
   
   compile_opt idl2, hidden
-  overall_time = SYSTIME(1)
+  point_time = SYSTIME(1)
+  
+  ENVI, /restore_base_save_files
+  ENVI_BATCH_INIT, log_file='batch.txt'
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -48,17 +51,13 @@ PRO process_single_point
   timestamp = year + String(m, FORMAT='(I2.2)') + date + '-' + hour + min + sec
   
   ; Select the folder where the input data is located. Either use the
-  ; code to have a GUI dialog presented, or uncomment the line below the GUI
-  ; code and hard hardcode the path to the input data.
-  point_folder = DIALOG_PICKFILE(/DIRECTORY, $
-    TITLE="Choose a folder to process", PATH=default_folder_path)
-  ; Path to input data (comment out above two lines if you hardcode the input
-  ; data path).
-  ;point_folder = "M:\Data\China\FNNR\2012_DHP_Survey\TIFFs\1\A"
-  
-  ENVI, /restore_base_save_files
-  ENVI_BATCH_INIT, log_file='batch.txt'
-  
+  ; code to have a GUI dialog presented, or use the value of the point folder
+  ; input parameter.
+  IF point_folder EQ !NULL THEN BEGIN
+    point_folder = DIALOG_PICKFILE(/DIRECTORY, $
+      TITLE="Choose a folder to process", PATH=default_folder_path)
+  END
+    
   pos = STREGEX(point_folder, '[0-9]{1,2}[\\]{1,2}[a-iA-I1-9]$', length=len)
     split_point_folder = strsplit(point_folder, "\/", /EXTRACT, count=num_strs)
   plot_ID = split_point_folder[num_strs-2]
@@ -89,8 +88,7 @@ PRO process_single_point
   
   PRINT, "************************************************************"
   PRINT, "Processing " + point_folder
-  PRINT, "************************************************************"
-  
+    
   ; First save the processing parameters so they can be recovered later
   SAVE, FILENAME=parameter_file, layer_stack_file, isodata_file, reclass_file, $
     reclass_cie_file, reclass_cie_zipfile, iterations, change_thresh, $
@@ -114,9 +112,9 @@ PRO process_single_point
   PRINT, results
     
   ENVI_BATCH_EXIT
+  
+  PRINT, "Finished processing " + point_folder
+  PRINT, "Point processing time: ", STRTRIM((ROUND(SYSTIME(1) - point_time)/60.), 2), $
+    " minutes"
   PRINT, "************************************************************"
-  PRINT, "             Completed CAN-EYE pre-processing."
-  PRINT, "************************************************************"
-  PRINT, "Total processing time: ", STRTRIM(ROUND(SYSTIME(1) - overall_time),2), $
-    " seconds"
 END
