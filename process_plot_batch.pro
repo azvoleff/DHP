@@ -32,8 +32,11 @@ PRO process_plot_batch
     default_folder_path, zip_path, output_folder, ignored_exposures
     
   COMPILE_OPT idl2, hidden
-  
+    
   plot_time = SYSTIME(1)
+  
+  e = ENVI(/HEADLESS)
+  ENVI_BATCH_STATUS_WINDOW, /ON
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -65,7 +68,7 @@ PRO process_plot_batch
     process_plot, plot_folder
     
   ENDFOR
-  
+    
   PRINT, "Finished processing " + input_folder
   PRINT, "Folder processing time: ", STRTRIM(ROUND((SYSTIME(1) - plot_time)/60.) ,2), $
     " minutes"

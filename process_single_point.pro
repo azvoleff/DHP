@@ -28,10 +28,11 @@ PRO process_single_point, point_folder
     default_folder_path, zip_path, output_folder, ignored_exposures
     
   COMPILE_OPT idl2, hidden
+  
   point_time = SYSTIME(1)
   
-  ENVI, /restore_base_save_files
-  ENVI_BATCH_INIT, log_file='batch.txt'
+  e = ENVI(/HEADLESS)
+  ENVI_BATCH_STATUS_WINDOW, /ON
   
   ; Load the parameters from the setup file.
   setup_parameters
@@ -110,8 +111,6 @@ PRO process_single_point, point_folder
   FILE_COPY, reclass_file, reclass_cie_file
   SPAWN, zip_path + " -m -j " + reclass_cie_zipfile + " " + reclass_cie_file, results
   PRINT, results
-  
-  ENVI_BATCH_EXIT
   
   PRINT, "Finished processing " + point_folder
   PRINT, "Point processing time: ", STRTRIM((ROUND(SYSTIME(1) - point_time)/60.), 2), $

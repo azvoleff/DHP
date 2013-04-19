@@ -35,6 +35,9 @@ PRO process_plot, plot_folder
   
   plot_time = SYSTIME(1)
   
+  e = ENVI(/HEADLESS)
+  ENVI_BATCH_STATUS_WINDOW, /ON
+  
   ; Load the parameters from the setup file.
   setup_parameters
   
