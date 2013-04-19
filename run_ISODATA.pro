@@ -15,7 +15,7 @@
 ;    num_classes
 ;
 ; :Author: Alex Zvoleff
-; 
+;
 ; :Date: March, 8, 2013
 ;-
 PRO run_isodata, input_image, output_file, iterations, change_thresh, $

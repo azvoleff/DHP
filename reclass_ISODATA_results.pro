@@ -7,14 +7,14 @@
 ;    layer_stack_path
 ;    output_file
 ;    num_top_clusters
-;    
+;
 ; :Author: Alex Zvoleff
-; 
+;
 ; :Date: March, 8, 2013
 ;-
 PRO reclass_isodata_results, input_image, layer_stack_path, output_file, num_top_clusters
   COMPILE_OPT idl2, hidden
-      
+  
   PRINT, "Reclassifying ISODATA results..."
   ENVI_OPEN_FILE, input_image, R_FID=c_fid
   ENVI_FILE_QUERY, c_fid, DIMS=dims, NB=nb, CLASS_NAMES=class_names, $

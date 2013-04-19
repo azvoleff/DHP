@@ -10,7 +10,7 @@
 ;    mask_path
 ;
 ; :Author: Alex Zvoleff
-; 
+;
 ; :Date: March, 8, 2013
 ;-
 PRO make_red_layer_stack, input_folder, band_num, output_file, $
@@ -30,8 +30,8 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
   files = FILE_SEARCH(input_folder + PATH_SEP() + "*")
   tiff_list = STREGEX(files, filename_regex, /extract, /fold_case)
   ; Remove empty entries
-  non_empties = where(tiff_list NE '')
-  if N_ELEMENTS(non_empties) EQ 1 && non_empties EQ -1 THEN $
+  non_empties = WHERE(tiff_list NE '')
+  IF N_ELEMENTS(non_empties) EQ 1 && non_empties EQ -1 THEN $
     MESSAGE, 'No tiffs found in ' + input_folder + $
     ' (using regular expression "' + filename_regex + '")'
   tiff_list = tiff_list[non_empties]
@@ -39,25 +39,25 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
   EV_strings = STREGEX(tiff_list, "_[-]?[0-4] EV", /extract, /fold_case)
   EV_values = LONG(STREGEX(EV_strings, "[-]?[0-4]", /extract, /fold_case))
   ; Sort tiff list in order by EV value
-  tiff_list = tiff_list[sort(EV_values)]
+  tiff_list = tiff_list[SORT(EV_values)]
   ; Now sort EV value list for use in excluding exposures
-  EV_values = EV_values[sort(EV_values)]
+  EV_values = EV_values[SORT(EV_values)]
   included_exposures = MAKE_ARRAY(N_ELEMENTS(tiff_list),1, /INTEGER, VALUE=1)
   IF ignored_exposures NE [] THEN BEGIN
     FOR i=0, (N_ELEMENTS(ignored_exposures)-1) DO BEGIN
-      loc = where(EV_values EQ ignored_exposures[i], /NULL)
+      loc = WHERE(EV_values EQ ignored_exposures[i], /NULL)
       IF loc EQ !NULL THEN MESSAGE, "Error: cannot exclude exposure " + $
         STRTRIM(ignored_exposures[i], 2) + " - check if file exists"
       included_exposures[loc] = 0
     ENDFOR
-    tiff_list = tiff_list[where(included_exposures, /NULL)]
-    incuded_indices = where(included_exposures, complement=excluded_indices, /NULL)
-    print, ["Excluded exposures (in EV):", STRTRIM(EV_values[excluded_indices], 2)]
+    tiff_list = tiff_list[WHERE(included_exposures, /NULL)]
+    incuded_indices = WHERE(included_exposures, complement=excluded_indices, /NULL)
+    PRINT, ["Excluded exposures (in EV):", STRTRIM(EV_values[excluded_indices], 2)]
   ENDIF
   num_tiffs = N_ELEMENTS(tiff_list)
   IF num_tiffs LT 1 THEN MESSAGE, "Error: all tiffs excluded"
-  print, ["Included exposures (in EV):", STRTRIM(EV_values[where(included_exposures, /NULL)], 2)]
-    
+  PRINT, ["Included exposures (in EV):", STRTRIM(EV_values[WHERE(included_exposures, /NULL)], 2)]
+  
   FOR i=0L,(num_tiffs-1) DO BEGIN
     PRINT, "Reading band " + STRTRIM(band_num,2) + " from " + tiff_list[i]
     image_data = READ_TIFF(input_folder + PATH_SEP() + tiff_list[i], $
