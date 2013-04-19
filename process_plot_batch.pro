@@ -27,11 +27,11 @@
 ;-
 PRO process_plot_batch
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
-  change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-  iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-  default_folder_path, zip_path, output_folder, ignored_exposures
-  
-  compile_opt idl2, hidden
+    change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
+    iso_split_std, file_prefix, filename_regex, num_top_clusters, $
+    default_folder_path, zip_path, output_folder, ignored_exposures
+    
+  COMPILE_OPT idl2, hidden
   
   plot_time = SYSTIME(1)
   
@@ -43,30 +43,30 @@ PRO process_plot_batch
   ; code and hard hardcode the path to the input data.
   input_folder = DIALOG_PICKFILE(/DIRECTORY, $
     TITLE="Choose a folder of plot folders to process", PATH=default_folder_path)
-
+    
   PRINT, "************************************************************"
   PRINT, "Processing " + input_folder
-    
+  
   ; Below regex will work find plot folders numbered 000-999. Change as
   ; necessary.
   plot_folder_list = FILE_SEARCH(input_folder + PATH_SEP() + "*", count=count, /TEST_DIRECTORY)
   IF count EQ 0 THEN BEGIN
     MESSAGE, 'No plot folders found in ' + input_folder
   END
-    
+  
   PRINT, "Found " + STRTRIM(count, 2) + " plot folders"
-   
+  
   FOR i=0, count-1 DO BEGIN
     plot_folder = plot_folder_list[i]
-        
+    
     IF NOT FILE_TEST(plot_folder, /DIRECTORY, /READ) THEN $
       MESSAGE, "Error: cannot read from " + plot_folder
-    
+      
     process_plot, plot_folder
     
   ENDFOR
   
-  PRINT, "Finished processing " + input_folder    
+  PRINT, "Finished processing " + input_folder
   PRINT, "Folder processing time: ", STRTRIM(ROUND((SYSTIME(1) - plot_time)/60.) ,2), $
     " minutes"
   PRINT, "************************************************************"

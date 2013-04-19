@@ -27,11 +27,11 @@
 ;-
 PRO process_plot, plot_folder
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
-  change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
-  iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-  default_folder_path, zip_path, output_folder, ignored_exposures
-  
-  compile_opt idl2, hidden
+    change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
+    iso_split_std, file_prefix, filename_regex, num_top_clusters, $
+    default_folder_path, zip_path, output_folder, ignored_exposures
+    
+  COMPILE_OPT idl2, hidden
   
   plot_time = SYSTIME(1)
   
@@ -45,7 +45,7 @@ PRO process_plot, plot_folder
     plot_folder = DIALOG_PICKFILE(/DIRECTORY, $
       TITLE="Choose a folder to process", PATH=default_folder_path)
   END
-
+  
   
   PRINT, "************************************************************"
   PRINT, "Processing " + plot_folder
@@ -58,13 +58,13 @@ PRO process_plot, plot_folder
     PRINT, "Found " + STRTRIM(count, 2) + " point folders:"
     FOR i=0, count-1 DO PRINT, "    " + point_folder_list[i]
   ENDELSE
-
+  
   FOR i=0, count-1 DO BEGIN
     point_folder = point_folder_list[i]
- 
+    
     IF NOT FILE_TEST(point_folder, /DIRECTORY, /READ) THEN $
       MESSAGE, "Error: cannot read from " + point_folder
-    
+      
     process_single_point, point_folder
     
   ENDFOR
@@ -73,5 +73,5 @@ PRO process_plot, plot_folder
   PRINT, "Plot processing time: ", STRTRIM(ROUND((SYSTIME(1) - plot_time)/60.) ,2), $
     " minutes"
   PRINT, "************************************************************"
-
+  
 END

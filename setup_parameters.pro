@@ -11,10 +11,10 @@ PRO setup_parameters
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
     default_folder_path, zip_path, output_folder, ignored_exposures
+    
+  COMPILE_OPT idl2, hidden
   
-  compile_opt idl2, hidden
-  
-  ; Specifying a default output folder is optional. To disable output folder 
+  ; Specifying a default output folder is optional. To disable output folder
   ; and output files in input folder, uncomment the "output_folder = !NULL"
   ; line.
   output_folder = "D:\Workspace"
@@ -29,11 +29,11 @@ PRO setup_parameters
   mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
   ;mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
   ;mask_path = !NULL
-
+  
   ; Path to Info-Zip executable
   zip_path = "C:\Users\azvoleff\Code\IDL\DHP\zip300xn\zip.exe"
   ;zip_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\zip.exe"
-
+  
   ; default_folder_path specifies the default path to show in the file
   ; picker dialog. If an invalid path is specified, it will be ignored.
   default_folder_path = "R:\Data\China\FNNR\2012_DHP_Survey\TIFFs"
@@ -89,7 +89,7 @@ PRO setup_parameters
   ;file_prefix = "Wolong_DHP_Spring2012_"
   file_prefix = "FNNR_DHP_Fall2012_"
   filename_regex = file_prefix + '[1-9]?[0-9]*-[1-9a-iA-I]_[-]?[0-4] EV_[0-9]{8,8}_[0-9]{6,6}.(TIF|tif)'
-
+  
   ; Check that the specified paths are valid
   IF output_folder NE !NULL THEN $
     IF NOT FILE_TEST(output_folder, /DIRECTORY, /WRITE) THEN $
