@@ -47,7 +47,7 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
     FOR i=0, (N_ELEMENTS(ignored_exposures)-1) DO BEGIN
       loc = where(EV_values EQ ignored_exposures[i], /NULL)
       IF loc EQ !NULL THEN MESSAGE, "Error: cannot exclude exposure " + $
-        STRTRIM(ignored_exposures[i], 2) + " - check if file exists
+        STRTRIM(ignored_exposures[i], 2) + " - check if file exists"
       included_exposures[loc] = 0
     ENDFOR
     tiff_list = tiff_list[where(included_exposures, /NULL)]
