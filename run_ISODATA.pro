@@ -21,6 +21,7 @@
 PRO run_isodata, input_image, output_file, iterations, change_thresh, $
   iso_merge_dist, iso_merge_pairs, iso_min_pixels, iso_split_std, $
   min_classes, num_classes
+  
   COMPILE_OPT idl2, hidden
   
   ; method=4 tells ENVI to use ISODATA for clustering
