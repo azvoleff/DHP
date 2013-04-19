@@ -103,7 +103,7 @@ PRO process_single_point, point_folder
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, min_classes, num_classes
   reclass_isodata_results, isodata_file, layer_stack_file, reclass_file, $
-    num_top_clusters
+    mask_path, num_top_clusters
     
   ; Now save the reclass file as an 8 bit binary format file with a cie
   ; extension, then compress it into a zipfile for CAN-EYE.

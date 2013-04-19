@@ -12,9 +12,12 @@
 ;
 ; :Date: March, 8, 2013
 ;-
-PRO reclass_isodata_results, input_image, layer_stack_path, output_file, num_top_clusters
+
+PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
+  mask_path, num_top_clusters
+    
   COMPILE_OPT idl2, hidden
-  
+    
   PRINT, "Reclassifying ISODATA results..."
   ENVI_OPEN_FILE, input_image, R_FID=c_fid
   ENVI_FILE_QUERY, c_fid, DIMS=dims, NB=nb, CLASS_NAMES=class_names, $
@@ -36,10 +39,21 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, num_top
   class_codes = SORT(means)
   num_codes = N_ELEMENTS(class_codes)
   sky_codes = class_codes[(num_codes - num_top_clusters):(num_codes -1)]
-  masked_code = class_codes[1]
-  
+    
   image_data = ENVI_GET_DATA(DIMS=dims, FID=c_fid, POS=[0L])
-  recoded_image_data = (image_data EQ masked_code) * 255
+  
+  IF(N_ELEMENTS(mask_path) EQ 0) THEN mask_path=!NULL
+  IF mask_path NE !NULL THEN BEGIN
+    PRINT, "Reading mask from " + mask_path
+    mask = read_binary(mask_path, DATA_DIMS=[4928, 3264])
+    ; End result of below line is masked areas equal 255, not masked areas equal
+    ; zero. Note that we need to invert the mask.
+    recoded_image_data = (mask-1) * (-1) * 255
+  ENDIF ELSE BEGIN
+    recoded_image_data = image_data * 0
+  ENDELSE
+  
+  ; Now set the sky clusters to 100
   FOR i=0L,(num_top_clusters-1) DO $
     recoded_image_data[WHERE(image_data EQ sky_codes[i])] = 100
     
