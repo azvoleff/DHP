@@ -10,7 +10,7 @@ PRO setup_parameters
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path, zip_path, output_folder, ignored_exposures
+    default_folder_path, zip_path, output_folder, ignored_exposures, mask_dims
     
   COMPILE_OPT idl2, hidden
   
@@ -29,6 +29,9 @@ PRO setup_parameters
   mask_path = "C:\Users\azvoleff\Code\IDL\DHP\D7000_Sigma4.5_Mask.dat"
   ;mask_path = "C:\Users\winroot\Desktop\IDL_Processing_Code\D7000_Sigma4.5_Mask.dat"
   ;mask_path = !NULL
+  
+  ; Specify the dimensions of the mask in pixels, as [ncol, nrow]
+  mask_dims = [4928, 3264]
   
   ; Path to Info-Zip executable
   zip_path = "C:\Users\azvoleff\Code\IDL\DHP\zip300xn\zip.exe"
@@ -53,7 +56,7 @@ PRO setup_parameters
   ; red band, 2 for blue band, and 3 for green band.
   band_number = 1
   ; Below are the parameters for the ISODATA clustering
-  iterations = 20 ; Default to 20
+  iterations = 1 ; Default to 20
   ; min_classes specifies the minimum number of output classes
   min_classes = 10 ; Default to 10
   ; num_classes specifies the maximum number of output classes

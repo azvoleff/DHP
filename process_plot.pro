@@ -29,7 +29,7 @@ PRO process_plot, plot_folder
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path, zip_path, output_folder, ignored_exposures
+    default_folder_path, zip_path, output_folder, ignored_exposures, mask_dims
     
   COMPILE_OPT idl2, hidden
   

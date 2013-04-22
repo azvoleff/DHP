@@ -14,7 +14,7 @@
 ;-
 
 PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
-  mask_path, num_top_clusters
+  mask_path, mask_dims, num_top_clusters
     
   COMPILE_OPT idl2, hidden
     
@@ -45,7 +45,7 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
   IF(N_ELEMENTS(mask_path) EQ 0) THEN mask_path=!NULL
   IF mask_path NE !NULL THEN BEGIN
     PRINT, "Reading mask from " + mask_path
-    mask = read_binary(mask_path, DATA_DIMS=[4928, 3264])
+    mask = read_binary(mask_path, DATA_DIMS=mask_dims)
     ; End result of below line is masked areas equal 255, not masked areas equal
     ; zero. Note that we need to invert the mask.
     recoded_image_data = (mask-1) * (-1) * 255

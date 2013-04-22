@@ -25,7 +25,7 @@ PRO process_single_point, point_folder
   COMMON parameters, mask_path, band_number, iterations, min_classes, num_classes, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, file_prefix, filename_regex, num_top_clusters, $
-    default_folder_path, zip_path, output_folder, ignored_exposures
+    default_folder_path, zip_path, output_folder, ignored_exposures, mask_dims
     
   COMPILE_OPT idl2, hidden
   
@@ -98,12 +98,12 @@ PRO process_single_point, point_folder
     file_prefix, filename_regex, ignored_exposures
     
   make_red_layer_stack, point_folder, band_number, layer_stack_file, $
-    filename_regex, mask_path, ignored_exposures
+    filename_regex, mask_path, mask_dims, ignored_exposures
   run_isodata, layer_stack_file, isodata_file, iterations, $
     change_thresh, iso_merge_dist, iso_merge_pairs, iso_min_pixels, $
     iso_split_std, min_classes, num_classes
   reclass_isodata_results, isodata_file, layer_stack_file, reclass_file, $
-    mask_path, num_top_clusters
+    mask_path, mask_dims, num_top_clusters
     
   ; Now save the reclass file as an 8 bit binary format file with a cie
   ; extension, then compress it into a zipfile for CAN-EYE.

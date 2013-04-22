@@ -14,7 +14,7 @@
 ; :Date: March, 8, 2013
 ;-
 PRO make_red_layer_stack, input_folder, band_num, output_file, $
-  filename_regex, mask_path, ignored_exposures
+  filename_regex, mask_path, mask_dims, ignored_exposures
   
   COMPILE_OPT idl2, hidden
   
@@ -22,7 +22,7 @@ PRO make_red_layer_stack, input_folder, band_num, output_file, $
   
   IF mask_path NE !NULL THEN BEGIN
     PRINT, "Reading mask from " + mask_path
-    mask = read_binary(mask_path, DATA_DIMS=[4928, 3264])
+    mask = read_binary(mask_path, DATA_DIMS=mask_dims)
   ENDIF
   
   PRINT, "Making layer stack..."
