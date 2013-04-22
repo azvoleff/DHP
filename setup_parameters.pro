@@ -56,7 +56,7 @@ PRO setup_parameters
   ; red band, 2 for blue band, and 3 for green band.
   band_number = 1
   ; Below are the parameters for the ISODATA clustering
-  iterations = 1 ; Default to 20
+  iterations = 20 ; Default to 20
   ; min_classes specifies the minimum number of output classes
   min_classes = 10 ; Default to 10
   ; num_classes specifies the maximum number of output classes
