@@ -53,7 +53,7 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
     recoded_image_data = image_data * 0
   ENDELSE
   
-  ; Now set the sky clusters to 100
+  ; Now set the canopy clusters to 100
   FOR i=0L,(num_top_clusters-1) DO $
     recoded_image_data[WHERE(image_data EQ canopy_codes[i])] = 100
     
