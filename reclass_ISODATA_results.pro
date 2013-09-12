@@ -34,11 +34,11 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
   ENVI_DOIT, 'CLASS_STATS_DOIT', CLASS_DIMS=dims, CLASS_FID=c_fid, $
     FID=l_fid, CLASS_PTR=class_ptr, POS=pos, COMP_FLAG=0, mean=means
     
-  ; Recode so the brightest class is set to 100 (for canopy) and all other
-  ; classes are set to zero. Set invalid values (masked areas) to 255
+  ; Recode so the brightest class is set to 100 (for sky) and all other
+  ; classes are set to zero (canopy). Set invalid values (masked areas) to 255
   class_codes = SORT(means)
   num_codes = N_ELEMENTS(class_codes)
-  sky_codes = class_codes[(num_codes - num_top_clusters):(num_codes -1)]
+  canopy_codes = class_codes[(num_codes - num_top_clusters):(num_codes - 1)]
     
   image_data = ENVI_GET_DATA(DIMS=dims, FID=c_fid, POS=[0L])
   
@@ -55,7 +55,7 @@ PRO reclass_isodata_results, input_image, layer_stack_path, output_file, $
   
   ; Now set the sky clusters to 100
   FOR i=0L,(num_top_clusters-1) DO $
-    recoded_image_data[WHERE(image_data EQ sky_codes[i])] = 100
+    recoded_image_data[WHERE(image_data EQ canopy_codes[i])] = 100
     
   image_data_dims = SIZE(image_data, /DIMENSIONS)
   
